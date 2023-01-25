@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, white, yellow } from 'colorette';
 import type { TextChannel } from 'discord.js';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import cron from "node-cron"
 import path, { join } from 'path';
 
@@ -23,18 +23,22 @@ export class UserEvent extends Listener {
 	public run() {
 
 		const cron_str = dev ? '*/20 * * * * *' : '0 0 8 * * * *';
+		if(!(existsSync(join(path.resolve(""), `losungen_${(new Date()).getFullYear()}.json`))) || 
+		!(existsSync(join(path.resolve(""), "guildconfig.json"))))
+			throw new Error("Some Config Files are missing")
 		cron.schedule(cron_str, async (now) => {
 			//onst now = new Date()
 			if (now === 'manual' || now === 'init' || process.env.SKIP_CRONJOB !== undefined) return;
 			this.container.logger.info('*** Biblebomber: ACTIVE');
 			const data: Array<Array<string>> = JSON.parse(readFileSync(join(path.resolve(""), `losungen_${now.getFullYear()}.json`)).toString());
+			const guild_data: Record<string, string> = JSON.parse(readFileSync(join(path.resolve(""), "guildconfig.json")).toString())
 			const today = date_string(now);
 			
 			data.forEach(async (item) => {
 				//this.container.logger.debug(today)
 				if (item[0] === today) {
 					
-						const channel = await (await this.container.client.guilds.fetch("1015335857550532679")).channels.fetch("1067138512186519562");
+						const channel = await (await this.container.client.guilds.fetch(guild_data["guild_id"])).channels.fetch(guild_data["channel_id"]);
 						let new_msg = await (channel as TextChannel).send({
 							embeds: [
 								{
