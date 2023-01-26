@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Zip File
-        run: zip -r ${{ github.event.repository.name }}.zip . -x ".git/*" ".github/*" "node_modules/* ".gitignore"
+        run: zip -r ${{ github.event.repository.name }}.zip . -x ".git/*" ".github/*" "node_modules/*" ".gitignore"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
