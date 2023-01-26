@@ -2,7 +2,7 @@
 
 ## Installieren
 
-`npm install`. Nicht mehr, nicht weniger.
+`npm ci --omit=dev`
 
 ## Konfigurieren
 
@@ -11,7 +11,13 @@ des Servers bei "guild_id" und die Id des Channels bei "channel_id" einsetzen.
 
 Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausführen
 
-## Ausführen
+## Starten
+
+`npm run start` bzw. mit [PM2](https://github.com/mainquestministries/losungsbot/tree/master#pm2) `pm2 start dist/index.js --name losungsbot`
+
+## Entwicklung
+
+`npm install`
 
 ### Kompilieren
 
@@ -19,18 +25,12 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausfüh
 
 ### Starten
 
-`npm run start`
+`NODE_ENV=devel npm run dev` Hinweis: Der Bot sendet dann JEDE Minute eine Nachricht. NIEMALS in einer Produktionsumgebung nutzen!
 
 ### PM2
 
-Ich empfehle AUSDRÜCKLICH, pm2 zu benutzen.
+Ich empfehle AUSDRÜCKLICH, pm2 zu benutzen, speziell wenn auf dem server mehrere Bots laufen.
 PM2 kann folgendermaßen installiert werden: `[sudo] npm install -g pm2`
 (Sudo ist auf z. B. SUSE bzw. SLE notwendig)
 
-Dann kann die App einfach per `pm2 start dist/index.js --name losungsbot` gestartet werden.
-
 Siehe https://pm2.keymetrics.io/
-
-### Devmode
-
-`NODE_ENV=devel npm run dev`
