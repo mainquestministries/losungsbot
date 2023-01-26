@@ -1,30 +1,26 @@
-# TypeScript Sapphire Bot example
+# losungsbot
 
-This is a basic setup of a Discord bot using the [sapphire framework][sapphire] written in TypeScript
+## Installieren
 
-## How to use it?
+`npm install`. Nicht mehr, nicht weniger.
 
-### Prerequisite
+## Konfigurieren
 
-```sh
-npm install
-```
+Du musst `guildconfig_template.json` kopieren und die Werte (rechtsklick - Copy ID)
+des Servers bei "guild_id" und die Id des Channels bei "channel_id" einsetzen.
 
-### Development
+Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausführen
 
-This example can be run with `tsc-watch` to watch the files and automatically restart your bot.
+## Ausführen
 
-```sh
-npm run watch:start
-```
+### Kompilieren
 
-### Production
+`npm run build`
 
-You can also run the bot with `npm dev`, this will first build your code and then run `node ./dist/index.js`. But this is not the recommended way to run a bot in production.
+### Starten
 
-## License
+`npm run start`
 
-Dedicated to the public domain via the [Unlicense], courtesy of the Sapphire Community and its contributors.
+### Devmode
 
-[sapphire]: https://github.com/sapphiredev/framework
-[unlicense]: https://github.com/sapphiredev/examples/blob/main/LICENSE.md
+`NODE_ENV=devel npm run dev`
