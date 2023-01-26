@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name   : "main",
+    name   : "Losungsbot",
     script : "./dist/index.js",
     env: {
         NODE_ENV: "production"

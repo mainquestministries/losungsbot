@@ -27,7 +27,7 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausfüh
 
 `npm run dev` Hinweis: Der Bot sendet dann JEDE Minute eine Nachricht. NIEMALS in einer Produktionsumgebung nutzen!
 
-### PM2
+## Hinweis zu PM2
 
 Ich empfehle AUSDRÜCKLICH, pm2 zu benutzen, speziell wenn auf dem server mehrere Bots laufen.
 PM2 kann folgendermaßen installiert werden: `[sudo] npm install -g pm2`
