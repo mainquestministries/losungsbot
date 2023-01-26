@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from 'fs';
 import cron from "node-cron"
 import path, { join } from 'path';
 
-const dev = process.env.NODE_ENV === 'devel';
+const dev = process.env.NODE_ENV !== 'production';
 function date_string(now: Date) {
 		let day = now.getDate().toString();
 		if (day.length === 1) day = `0${day}`;

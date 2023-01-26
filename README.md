@@ -13,7 +13,7 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausfüh
 
 ## Starten
 
-`npm run start` bzw. mit [PM2](https://github.com/mainquestministries/losungsbot/tree/master#pm2) `pm2 start dist/index.js --name losungsbot`
+`NODE_ENV=production npm run start` bzw. mit [PM2](https://github.com/mainquestministries/losungsbot/tree/master#pm2) `pm2 start ecosystem.config.js`
 
 ## Entwicklung
 
@@ -25,7 +25,7 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > src/.env` ausfüh
 
 ### Starten
 
-`NODE_ENV=devel npm run dev` Hinweis: Der Bot sendet dann JEDE Minute eine Nachricht. NIEMALS in einer Produktionsumgebung nutzen!
+`npm run dev` Hinweis: Der Bot sendet dann JEDE Minute eine Nachricht. NIEMALS in einer Produktionsumgebung nutzen!
 
 ### PM2
 
