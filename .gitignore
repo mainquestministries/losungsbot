@@ -32,4 +32,4 @@ config.ts
 .env.test.local
 .env.production.local
 guildconfig.json
-src/.env
+.env
