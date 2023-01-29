@@ -6,7 +6,7 @@
 
 ## Konfigurieren
 
-Du musst `guildconfig_template.json` kopieren und die Werte (rechtsklick - Copy ID)
+Du musst `guildconfig_template.json` kopieren bzw. in `guildconfig.json` umbennenen und die Werte (rechtsklick - Copy ID)
 des Servers bei "guild_id" und die Id des Channels bei "channel_id" einsetzen.
 
 Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > .env` ausführen
