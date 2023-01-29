@@ -22,7 +22,7 @@ export class UserEvent extends Listener {
 
 	public run() {
 
-		const cron_str = dev ? '*/20 * * * * *' : '0 0 8 * * * *';
+		const cron_str = dev ? '*/20 * * * * *' : '0 0 7 * * * *';
 		if(!(existsSync(join(path.resolve(""), `losungen_${(new Date()).getFullYear()}.json`))) || 
 		!(existsSync(join(path.resolve(""), "guildconfig.json"))))
 			throw new Error("Some Config Files are missing")
