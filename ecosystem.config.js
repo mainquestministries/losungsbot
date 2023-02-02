@@ -1,3 +1,4 @@
+//pm2 is getting to much memory
 module.exports = {
   apps : [{
     name   : "Losungsbot",

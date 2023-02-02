@@ -15,6 +15,9 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > .env` ausführen
 
 `NODE_ENV=production npm run start` bzw. mit [PM2](https://github.com/mainquestministries/losungsbot/tree/master#pm2) `pm2 start ecosystem.config.js`
 
+Alternativ kann supervisor benutzt werden, ein Template ist in `supervisor.conf`, jedoch muss dann noch ein shell-skript geschrieben wird,
+welches in das Bot-Verzeichnis wechselt.
+
 ## Entwicklung
 
 `npm install`
@@ -26,11 +29,3 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > .env` ausführen
 ### Starten
 
 `npm run dev` Hinweis: Der Bot sendet dann JEDE Minute eine Nachricht. NIEMALS in einer Produktionsumgebung nutzen!
-
-## Hinweis zu PM2
-
-Ich empfehle AUSDRÜCKLICH, pm2 zu benutzen, speziell wenn auf dem server mehrere Bots laufen.
-PM2 kann folgendermaßen installiert werden: `[sudo] npm install -g pm2`
-(Sudo ist auf z. B. SUSE bzw. SLE notwendig)
-
-Siehe <https://pm2.keymetrics.io/>
