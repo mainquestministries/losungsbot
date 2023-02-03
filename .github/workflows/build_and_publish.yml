@@ -21,8 +21,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build:production
-      - name: Identify
-        run: bash -c echo "v${{github.ref_name}}" > version.txt
       - name: Bundle
         run: zip -r ${{ github.event.repository.name }}-release.zip . -x "dist/.tsbuildinfo" "node_modules/*" "typings/*" "src/*" ".git/*" ".github/*" "node_modules/*" ".gitignore" "**/*.js.map" "tsconfig.json"
       - name: Publish
