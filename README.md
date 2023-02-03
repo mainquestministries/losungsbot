@@ -1,5 +1,11 @@
 # losungsbot
 
+## Hinweis:
+
+Profilbild von [Unsplash](https://unsplash.com/de/fotos/xUXGHzhIbN4)
+
+Die Losungen können [hier](https://www.losungen.de/download/) heruntergeladen werden. Sie sind kostenlos nutzbar (siehe Website für Bestimmungen)
+
 ## Installieren
 
 `npm ci --omit=dev`
@@ -13,10 +19,9 @@ Schließlich musst du `echo DISCORD_TOKEN=YOUR_PRIVATE_TOKEN > .env` ausführen
 
 ## Starten (Produktionsumgebung)
 
-`NODE_ENV=production npm run start` bzw. mit [PM2](https://github.com/mainquestministries/losungsbot/tree/master#pm2) `pm2 start ecosystem.config.js`
+`NODE_ENV=production npm run start` bzw. mit PM2 `pm2 start ecosystem.config.js` (pm2@5.2.2 scheint einen Memory Leak zu haben!)
 
-Alternativ kann supervisor benutzt werden, ein Template ist in `supervisor.conf`, jedoch muss dann noch ein shell-skript geschrieben wird,
-welches in das Bot-Verzeichnis wechselt.
+Alternativ kann supervisor benutzt werden, ein Template ist in `supervisor.conf`
 
 ## Entwicklung
 
