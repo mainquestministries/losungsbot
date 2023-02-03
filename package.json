@@ -1,6 +1,6 @@
 {
   "name": "losungsbot",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "main": "dist/index.js",
   "author": "@sapphire",
   "license": "UNLICENSE",
@@ -43,6 +43,7 @@
     "dev": "run-s build start",
     "watch:start": "tsc-watch --onSuccess \"node ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
+    "preversion": "git pull",
     "postversion": "git push && git push --tags"
   },
   "prettier": "@sapphire/prettier-config"
