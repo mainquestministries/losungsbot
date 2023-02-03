@@ -5,6 +5,6 @@ with open("package.json") as raw_data:
 
 version = data["version"]
 
-draft = any(c.isalpha() for c in version)
+prerelease = any(c.isalpha() for c in version)
 
-print(f"is_prerelease={draft}")
+print(f"is_prerelease={prerelease}")
