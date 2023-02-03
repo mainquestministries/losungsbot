@@ -44,7 +44,7 @@ export class UserEvent extends Listener {
 								{
 									title: `Tageslosung vom ${today}`,
 									description: `*${item[3]}:* ${item[4]}`,
-									color: 0x0055aa
+									color: 0xB49B83
 								}
 							]
 						});
