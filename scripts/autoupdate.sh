@@ -45,7 +45,7 @@ if  test -f "./guildconfig.json"  &&  test -f "./.env" ; then
     cp ./guildconfig.json $HOME/guildconfig.bak.json
     cp ./.env $HOME/env_var.bak.txt
 
-    echo "Backup fertig. Ich kann nicht sicherstellen, ob das das richtig Verzeichnis ist."
+    echo "Backup fertig."
 else
     echo "Dateien nicht gefunden. Update wird feige verweigert."
     exit 127
@@ -79,4 +79,28 @@ echo "Update fertig!"
 echo "Neue Version: $TAG"
 echo "CURRENT_TAG=$TAG" > install_log.txt
 echo "LAST_UPDATE=`date +%F`" >> install_log.txt
-exit 0
+
+echo "Abhängigkeiten werden behoben..."
+
+if ! command -v npm &> /dev/null
+then
+    echo "npm wurde nicht gefunden."
+    exit
+else
+    if ! command -v nvm &> /dev/null; then
+        echo "NVM wurde nicht gefunden, Pakete können nicht installiert werden."
+    else
+        echo "NVM wurde aktiviert."
+        echo "Ausgewählt: `nvm run node --version`"
+        if yes_or_no "Ist das in Ordnung="; then
+            nvm use node
+        else
+            "NVM wurde nicht akzeptiert, Pakete können nicht installiert werden."
+            exit
+        fi
+    echo "Pakete werden installiert, bitte warten..."
+    npm ci --omit=dev
+fi
+
+echo "Alle Abhängigkeiten aktualisiert"
+echo "Bitte den Bot zeitnah neustarten!!!"
