@@ -4,7 +4,7 @@ echo "losungsbot wird aktualisiert, bitte warten..."
 REPO_PATH=.
 GUILDCONFIG=./guildconfig.json
 
-if [[ $* =~ "-y" ]] || [[ $* =~ "--yes" ]]
+if [[ $* =~ "-y" ]] || [[ $* =~ "--yes" ]]; then
     FORCE_YES=1
 fi
 
@@ -46,8 +46,8 @@ fi
 
 if  test -f "$GUILDCONFIG"  &&  test -f "$REPO_PATH/.env" ; then
     echo "$GUILDCONFIG und env-Datei existiert."
-    cp $GUILDCONFIG
-    cp $REPO_PATH/.env
+    cp $GUILDCONFIG $HOME/guildconfig.bak.json
+    cp $REPO_PATH/.env $HOME/env_var.bak.txt
 
     echo "Backup fertig. Ich kann nicht sicherstellen, ob das das richtig Verzeichnis ist."
 else
