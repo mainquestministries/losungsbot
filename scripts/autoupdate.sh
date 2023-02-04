@@ -27,7 +27,7 @@ if test -f "$REPO_PATH/.install_log.txt"; then
     if [ "$TAG" = "$CURRENT_TAG" ]; then
         echo "Bereits die neueste Version."
     else
-        if [ -n $FORCE_YES ] || yes_or_no "Aktualisieren: $CURRENT_TAG->$TAG"; then
+        if [ -n "$FORCE_YES" ] || yes_or_no "Aktualisieren: $CURRENT_TAG->$TAG"; then
             echo "Aktualisierung wird durchgeführt."
         else
             echo "Abbruch durch Benutzer."
@@ -36,7 +36,7 @@ if test -f "$REPO_PATH/.install_log.txt"; then
     fi
 else
     echo "Die aktuelle Version konnte nicht überprüft werden."
-    if [ -n $FORCE_YES ] || yes_or_no "Durch $TAG ersetzen?"; then
+    if [ -n "$FORCE_YES" ] || yes_or_no "Durch $TAG ersetzen?"; then
         echo "Aktualisierung wird durchgeführt."
     else
         echo "Abbruch durch Benutzer."
