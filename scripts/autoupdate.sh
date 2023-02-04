@@ -10,16 +10,16 @@ fi
 
 function yes_or_no {
     while true; do
-        read -p "$* [y/n]: " yn
+        read -p "$* [j/n]: " yn
         case $yn in
-            [Yy]*) return 0  ;;
+            [Jj]*) return 0  ;;
             [Nn]*) return 1 ;;
         esac
     done
 }
 
 
-read TAG <<< $( curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" |sed 's/\"//g')
+read TAG <<< $( curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" | sed 's/\"//g' )
 
 if test -f "$REPO_PATH/.install_log.txt"; then
     source "$REPO_PATH/.install_log.txt"
