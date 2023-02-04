@@ -30,6 +30,7 @@ jobs:
       - name: Bundle
         run: | 
               mv scripts/autoupdate.sh .
+              mv scripts/configure.sh .
               mv share/* .
               zip -r ${{ github.event.repository.name }}-release-${{github.ref_name}}.zip . -x "share/*" "scripts/*" "dist/.tsbuildinfo" "node_modules/*" "typings/*" "src/*" ".git/*" ".github/*" "node_modules/*" ".gitignore" "**/*.js.map" "tsconfig.json"
       - name: Publish

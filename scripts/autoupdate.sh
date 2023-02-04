@@ -21,8 +21,8 @@ function yes_or_no {
 
 read TAG <<< $( curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" |sed 's/\"//g')
 
-if test -f "$REPO_PATH/.download_history.txt"; then
-    source "$REPO_PATH/.download_history.txt"
+if test -f "$REPO_PATH/.install_log.txt"; then
+    source "$REPO_PATH/.install_log.txt"
     echo "Aktuelle Version: $CURRENT_TAG"
     if [ "$TAG" = "$CURRENT_TAG" ]; then
         echo "Bereits die neueste Version."
@@ -81,4 +81,6 @@ fi
 
 echo "Update fertig!"
 echo "Neue Version: $TAG"
+echo "CURRENT_TAG=$TAG" > .install_log.txt
+echo "LAST_UPDATE=`date +%F`" >> install_log.txt
 exit 0
