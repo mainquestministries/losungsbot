@@ -103,4 +103,10 @@ else
 fi
 
 echo "Alle Abhängigkeiten aktualisiert"
-echo "Bitte den Bot zeitnah neustarten!!!"
+
+if yes_or_no "Soll der Bot via supervisorctl neugestartet werden?"; then
+    sudo supervisorctl restart losungsbot
+    echo "Neustart erfolgt."
+else 
+    echo "Bitte zeitnah neustarten!"
+fi
