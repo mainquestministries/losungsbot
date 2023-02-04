@@ -1,12 +1,7 @@
 #! /bin/bash
-echo "Der Losungsbot muss später neugestartet werden, da es sonst zu unvorhersehbaren Ereignissen kommen kann."
+echo "WICHTIG: Der Bot muss nach dem Update neugestartet werden, da es sonst zu unvorhersehbaren Ereignissen kommen kann."
 echo "losungsbot wird aktualisiert, bitte warten..."
-REPO_PATH=.
-GUILDCONFIG=./guildconfig.json
-
-if [[ $* =~ "-y" ]] || [[ $* =~ "--yes" ]]; then
-    FORCE_YES=1
-fi
+echo -e "\n"
 
 function yes_or_no {
     while true; do
@@ -19,15 +14,16 @@ function yes_or_no {
 }
 
 
-read TAG <<< $( curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" | sed 's/\"//g' )
+read TAG <<< $( curl -s https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" | sed 's/\"//g' )
 
-if test -f "$REPO_PATH/.install_log.txt"; then
-    source "$REPO_PATH/.install_log.txt"
+if test -f "./.install_log.txt"; then
+    source "./install_log.txt"
     echo "Aktuelle Version: $CURRENT_TAG"
     if [ "$TAG" = "$CURRENT_TAG" ]; then
         echo "Bereits die neueste Version."
+        exit 0
     else
-        if [ -n "$FORCE_YES" ] || yes_or_no "Aktualisieren: $CURRENT_TAG->$TAG"; then
+        if yes_or_no "Aktualisieren: $CURRENT_TAG->$TAG"; then
             echo "Aktualisierung wird durchgeführt."
         else
             echo "Abbruch durch Benutzer."
@@ -36,7 +32,7 @@ if test -f "$REPO_PATH/.install_log.txt"; then
     fi
 else
     echo "Die aktuelle Version konnte nicht überprüft werden."
-    if [ -n "$FORCE_YES" ] || yes_or_no "Durch $TAG ersetzen?"; then
+    if yes_or_no "Durch $TAG ersetzen?"; then
         echo "Aktualisierung wird durchgeführt."
     else
         echo "Abbruch durch Benutzer."
@@ -44,10 +40,10 @@ else
     fi
 fi
 
-if  test -f "$GUILDCONFIG"  &&  test -f "$REPO_PATH/.env" ; then
-    echo "$GUILDCONFIG und env-Datei existiert."
-    cp $GUILDCONFIG $HOME/guildconfig.bak.json
-    cp $REPO_PATH/.env $HOME/env_var.bak.txt
+if  test -f "./guildconfig.json"  &&  test -f "./.env" ; then
+    echo "./guildconfig.json und env-Datei existiert."
+    cp ./guildconfig.json $HOME/guildconfig.bak.json
+    cp ./.env $HOME/env_var.bak.txt
 
     echo "Backup fertig. Ich kann nicht sicherstellen, ob das das richtig Verzeichnis ist."
 else
@@ -57,30 +53,30 @@ fi
 
 mkdir -p .cache
 
-if wget -O .cache/losungsbot-latest.zip github.com/mainquestministries/losungsbot/releases/download/$TAG/losungsbot-release-$TAG.zip; then
+if wget -q --show-progress -O .cache/losungsbot-latest.zip github.com/mainquestministries/losungsbot/releases/download/$TAG/losungsbot-release-$TAG.zip; then
     rm -r dist/
 else
     echo "Download-Fehler"
     exit 1
 fi
 
-unzip -o .cache/losungsbot-latest.zip -d $REPO_PATH
+unzip -o .cache/losungsbot-latest.zip -d .
 
 rm -r .cache
 
-if  test -f "$GUILDCONFIG"  &&  test -f "$REPO_PATH/.env" ; then
-    echo "$GUILDCONFIG und env-Datei existieren bereits. Backups werden zerstört."
+if  test -f "./guildconfig.json"  &&  test -f "./.env" ; then
+    echo "./guildconfig.json und env-Datei existieren bereits. Backups werden zerstört."
     rm $HOME/guildconfig.bak.json
     rm $HOME/env_var.bak.txt
 
 else
     echo "Dateien nicht gefunden. Wiederherstellen..."
-    mv $HOME/guildconfig.bak.json $GUILDCONFIG
-    mv $HOME/env_var.bak.txt $REPO_PATH/.env
+    mv $HOME/guildconfig.bak.json ./guildconfig.json
+    mv $HOME/env_var.bak.txt ./.env
 fi
 
 echo "Update fertig!"
 echo "Neue Version: $TAG"
-echo "CURRENT_TAG=$TAG" > .install_log.txt
+echo "CURRENT_TAG=$TAG" > install_log.txt
 echo "LAST_UPDATE=`date +%F`" >> install_log.txt
 exit 0
