@@ -1,16 +1,55 @@
 #! /bin/bash
+echo "Der Losungsbot muss später neugestartet werden, da es sonst zu unvorhersehbaren Ereignissen kommen kann."
 echo "losungsbot wird aktualisiert, bitte warten..."
-Repo_Path=$1
-GUILDCONFIG=$1/guildconfig.json
+REPO_PATH=.
+GUILDCONFIG=./guildconfig.json
 
-curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" |sed 's/\"//g' | read TAG
+if [[ $* =~ "-y" ]] || [[ $* =~ "--yes" ]]
+    FORCE_YES=1
+fi
 
-if [ test -f "$GUILDCONFIG" ] && [ test -f "$REPO_PATH/.env" ]; then
+function yes_or_no {
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;
+            [Nn]*) return 1 ;;
+        esac
+    done
+}
+
+
+read TAG <<< $( curl https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" |sed 's/\"//g')
+
+if test -f "$REPO_PATH/.download_history.txt"; then
+    source "$REPO_PATH/.download_history.txt"
+    echo "Aktuelle Version: $CURRENT_TAG"
+    if [ "$TAG" = "$CURRENT_TAG" ]; then
+        echo "Bereits die neueste Version."
+    else
+        if [ -n $FORCE_YES ] || yes_or_no "Aktualisieren: $CURRENT_TAG->$TAG"; then
+            echo "Aktualisierung wird durchgeführt."
+        else
+            echo "Abbruch durch Benutzer."
+            exit 9
+        fi
+    fi
+else
+    echo "Die aktuelle Version konnte nicht überprüft werden."
+    if [ -n $FORCE_YES ] || yes_or_no "Durch $TAG ersetzen?"; then
+        echo "Aktualisierung wird durchgeführt."
+    else
+        echo "Abbruch durch Benutzer."
+        exit 9
+    fi
+fi
+
+if  test -f "$GUILDCONFIG"  &&  test -f "$REPO_PATH/.env" ; then
     echo "$GUILDCONFIG und env-Datei existiert."
-    cp $GUILDCONFIG $HOME/guildconfig.bak.json
-    cp $REPO_PATH/.env $HOME/env_var.bak.txt
+    cp $GUILDCONFIG
+    cp $REPO_PATH/.env
 
-    echo "Backup fertig."
+    echo "Backup fertig. Ich kann nicht sicherstellen, ob das das richtig Verzeichnis ist."
 else
     echo "Dateien nicht gefunden. Update wird feige verweigert."
     exit 127
@@ -18,14 +57,21 @@ fi
 
 mkdir -p .cache
 
-wget --output-document .cache/losungsbot-latest.zip github.com/mainquestministries/losungsbot/releases/download/latest/losungsbot-release-$TAG.zip
+if wget -O .cache/losungsbot-latest.zip github.com/mainquestministries/losungsbot/releases/download/$TAG/losungsbot-release-$TAG.zip; then
+    rm -r dist/
+else
+    echo "Download-Fehler"
+    exit 1
+fi
 
 unzip -o .cache/losungsbot-latest.zip -d $REPO_PATH
 
 rm -r .cache
 
-if [ test -f "$GUILDCONFIG" ] && [ test -f "$REPO_PATH/.env" ]; then
-    echo "$GUILDCONFIG und env-Datei existieren bereits."
+if  test -f "$GUILDCONFIG"  &&  test -f "$REPO_PATH/.env" ; then
+    echo "$GUILDCONFIG und env-Datei existieren bereits. Backups werden zerstört."
+    rm $HOME/guildconfig.bak.json
+    rm $HOME/env_var.bak.txt
 
 else
     echo "Dateien nicht gefunden. Wiederherstellen..."
