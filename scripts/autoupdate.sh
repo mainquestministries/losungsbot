@@ -16,7 +16,7 @@ function yes_or_no {
 
 read TAG <<< $( curl -s https://api.github.com/repos/mainquestministries/losungsbot/releases  | jq ".[0].tag_name" | sed 's/\"//g' )
 
-if test -f "./.install_log.txt"; then
+if test -f "./install_log.txt"; then
     source "./install_log.txt"
     echo "Aktuelle Version: $CURRENT_TAG"
     if [ "$TAG" = "$CURRENT_TAG" ]; then
