@@ -4,6 +4,9 @@ import { GatewayIntentBits, Partials } from 'discord.js';
 
 const client = new SapphireClient({
 	defaultPrefix: '!',
+	api : {
+		automaticallyConnect: false
+	},
 	regexPrefix: /^(hey +)?bot[,! ]/i,
 	caseInsensitiveCommands: true,
 	logger: {
