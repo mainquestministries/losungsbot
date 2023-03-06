@@ -43,6 +43,7 @@ export class UserEvent extends Listener {
 							embeds: [
 								{
 									title: `Tageslosung vom ${today}`,
+									url: `https://www.bibleserver.com/LUT/${item[3].replaceAll(" ", "")}`,
 									description: `*${item[3]}:* ${item[4]}`,
 									color: 0xB49B83
 								}
