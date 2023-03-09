@@ -45,6 +45,7 @@ jobs:
           
   publish:
     runs-on: ubuntu-22.04
+    needs: build
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
@@ -77,3 +78,61 @@ jobs:
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps: 
+    - uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3.6.0
+      with:
+        node-version: 18
+    - name: Install For Production
+      run: npm ci --omit=dev
+    - name: Remove Unused Files
+      run: |
+           rm -rf src/ scripts/ .git/ .github/
+           rm .gitignore .sapphirerc.json *.md tsconfig.json .prettierignore *.csv
+    - name: Download Dist
+      uses: actions/download-artifact@v2.1.1
+      with:
+        name: target_commonjs
+        path: dist
+    - name: Download JSON
+      uses: actions/download-artifact@v2.1.1
+      with:
+        name: losungen_json
+        path: losungen.json
+    - name: Pre Transaction
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: deployer
+        key: ${{ secrets.KEY }}
+        script: |
+                 sudo supervisorctl stop bost:losungsbot
+                 sudo /home/deployer/chown_losungsbot_deployer.sh
+                 sudo /home/deployer/cleanup_logs_losungsbot.sh 
+    - name: Transaction
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: deployer
+        key: ${{ secrets.KEY }}
+        source: .
+        target: /var/www/losungsbot
+    - name: Post Transaction
+      uses: appleboy/ssh-action@master
+      env: 
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      with:
+        host: ${{ secrets.HOST }}
+        username: deployer
+        key: ${{ secrets.KEY }}
+        envs: DISCORD_TOKEN
+        script: | 
+                cd /var/www/mqbot
+                echo "DISCORD_TOKEN=$DISCORD_TOKEN" > .env
+                sudo /home/deployer/chown_losungsbot_mqadmin.sh
+                sudo supervisorctl start bots:losungsbot
