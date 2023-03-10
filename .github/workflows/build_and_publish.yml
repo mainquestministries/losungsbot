@@ -22,10 +22,10 @@ jobs:
       - uses: actions/setup-python@v4.5.0
         with:
           python-version: 3.7
-      - name: Build Assets
-        run: python3 scripts/parse_csv.py
       - name: Build
         run: npm run build:production
+      - name: Build Assets
+        run: python3 scripts/parse_csv.py
       - name: Remove Unused Files
         run: | 
            rm "dist/.tsbuildinfo"
