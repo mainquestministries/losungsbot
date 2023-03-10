@@ -112,8 +112,8 @@ jobs:
         key: ${{ secrets.KEY }}
         script: |
                  sudo supervisorctl stop bost:losungsbot
-                 sudo /home/deployer/chown_losungsbot_deployer.sh
-                 sudo /home/deployer/cleanup_logs_losungsbot.sh 
+                 sudo /opt/deploy_scripts/chown_losungsbot_deployer.sh
+                 sudo /opt/deploy_scripts/cleanup_logs_losungsbot.sh 
     - name: Transaction
       uses: appleboy/scp-action@master
       with:
@@ -134,5 +134,5 @@ jobs:
         script: | 
                 cd /var/www/mqbot
                 echo "DISCORD_TOKEN=$DISCORD_TOKEN" > .env
-                sudo /home/deployer/chown_losungsbot_mqadmin.sh
+                sudo /opt/deploy_scripts/chown_losungsbot_mqadmin.sh
                 sudo supervisorctl start bots:losungsbot
