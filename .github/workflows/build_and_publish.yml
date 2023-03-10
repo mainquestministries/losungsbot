@@ -117,7 +117,7 @@ jobs:
         key: ${{ secrets.KEY }}
         envs: DISCORD_TOKEN
         script: | 
-                cd /var/www/mqbot
+                cd /var/www/losungsbot
                 echo "DISCORD_TOKEN=$DISCORD_TOKEN" > .env
                 sudo /opt/deploy_scripts/chown_losungsbot_mqadmin.sh
                 sudo supervisorctl start bots:losungsbot
