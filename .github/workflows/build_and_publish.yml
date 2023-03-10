@@ -55,9 +55,7 @@ jobs:
         name: target_commonjs
         path: dist
     - name: Bundle
-      run: | 
-              rm share/*
-              zip -r ${{ github.event.repository.name }}-release-${{github.ref_name}}.zip . -x "*.csv" "share/*" "scripts/*" "dist/.tsbuildinfo" "node_modules/*" "typings/*" "src/*" ".git/*" ".github/*" "node_modules/*" ".gitignore" "**/*.js.map" "tsconfig.json"
+      run: zip -r ${{ github.event.repository.name }}-release-${{github.ref_name}}.zip . -x "*.csv" "scripts/*" "dist/.tsbuildinfo" "node_modules/*" "typings/*" "src/*" ".git/*" ".github/*" "node_modules/*" ".gitignore" "**/*.js.map" "tsconfig.json"
     - name: Publish
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
@@ -83,7 +81,7 @@ jobs:
     - name: Remove Unused Files
       run: |
            rm -rf src/ scripts/ .git/ .github/
-           rm .gitignore .sapphirerc.json *.md tsconfig.json .prettierignore *.csv
+           rm -f .gitignore .sapphirerc.json *.md tsconfig.json .prettierignore *.csv
     - name: Download Dist
       uses: actions/download-artifact@v2.1.1
       with:
