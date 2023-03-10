@@ -24,7 +24,7 @@ export class UserEvent extends Listener {
 
 		const cron_str = dev ? '*/20 * * * * *' : '0 0 7 * * * *';
 		if(!(existsSync(join(path.resolve(""), `dist/losungen_${(new Date()).getFullYear()}.json`))))
-			throw new Error("Some Config Files are missing")
+			{this.container.logger.fatal(`dist/losungen_${(new Date()).getFullYear()}.json not found!`)}
 		cron.schedule(cron_str, async (now) => {
 			//onst now = new Date()
 			if (now === 'manual' || now === 'init' || process.env.SKIP_CRONJOB !== undefined) return;
