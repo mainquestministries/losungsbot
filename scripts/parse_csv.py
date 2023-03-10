@@ -1,9 +1,9 @@
-import csv, sys, json
+import csv, sys, json, os
 from datetime import datetime
 
 if len(sys.argv)==1:
     input_ = "losungen_{}.csv".format(datetime.now().year)
-    output_ = "losungen_{}.json".format(datetime.now().year)
+    output_ = "dist/losungen_{}.json".format(datetime.now().year)
 else:
     input_ = sys.argv[1]
     output_ = sys.argv[2]

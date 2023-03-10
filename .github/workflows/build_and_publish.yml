@@ -36,11 +36,6 @@ jobs:
           path: dist        
           retention-days: 1
           if-no-files-found: error
-      - name: Upload JSON
-        uses: actions/upload-artifact@v3.1.2
-        with: 
-          name: losungen_json
-          path: losungen.json
      
           
   publish:
@@ -59,11 +54,6 @@ jobs:
       with:
         name: target_commonjs
         path: dist
-    - name: Download JSON
-      uses: actions/download-artifact@v2.1.1
-      with:
-        name: losungen_json
-        path: losungen.json
     - name: Bundle
       run: | 
               rm share/*
@@ -99,11 +89,6 @@ jobs:
       with:
         name: target_commonjs
         path: dist
-    - name: Download JSON
-      uses: actions/download-artifact@v2.1.1
-      with:
-        name: losungen_json
-        path: losungen.json
     - name: Pre Transaction
       uses: appleboy/ssh-action@master
       with:
