@@ -79,7 +79,7 @@ jobs:
       with:
         node-version: 18
     - name: Install For Production
-      run: npm ci --omit=dev
+      run: npm ci --omit=dev // Audit Fix
     - name: Remove Unused Files
       run: |
            rm -rf src/ scripts/ .git/ .github/
@@ -96,7 +96,7 @@ jobs:
         username: deployer
         key: ${{ secrets.KEY }}
         script: |
-                 sudo supervisorctl stop bost:losungsbot
+                 sudo supervisorctl stop bots:losungsbot
                  sudo /opt/deploy_scripts/chown_losungsbot_deployer.sh
                  sudo /opt/deploy_scripts/cleanup_logs_losungsbot.sh 
     - name: Transaction
