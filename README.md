@@ -1,5 +1,7 @@
 # losungsbot
 
+[![CI/CD Pipeline](https://github.com/mainquestministries/losungsbot/actions/workflows/build_and_publish.yml/badge.svg)](https://github.com/mainquestministries/losungsbot/actions/workflows/build_and_publish.yml) [![CodeQL](https://github.com/mainquestministries/losungsbot/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/mainquestministries/losungsbot/actions/workflows/github-code-scanning/codeql)
+
 ## Hinweis:
 
 Profilbild von [Unsplash](https://unsplash.com/de/fotos/xUXGHzhIbN4)
