@@ -104,7 +104,7 @@ jobs:
         USER: deployer
         KEY: ${{ secrets.KEY }}
         TARGET: /var/www/losungsbot
-        ARGS: -avz --delete
+        ARGS: -az --stats --delete
         VERBOSE: true
     - name: Post Transaction
       uses: appleboy/ssh-action@master
@@ -114,9 +114,11 @@ jobs:
         host: ${{ secrets.HOST }}
         username: deployer
         key: ${{ secrets.KEY }}
-        envs: DISCORD_TOKEN
+        envs: DISCORD_TOKEN, GUILD_ID, CHANNEL_ID
         script: | 
                 cd /var/www/losungsbot
                 echo "DISCORD_TOKEN=$DISCORD_TOKEN" > .env
+                echo "GUILD_ID=$GUILD_ID" >> .env
+                echo "CHANNEL_ID=$CHANNEL_ID" >> .env
                 sudo /opt/deploy_scripts/chown_losungsbot_mqadmin.sh
                 sudo supervisorctl start bots:losungsbot

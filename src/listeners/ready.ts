@@ -30,14 +30,15 @@ export class UserEvent extends Listener {
 			if (now === 'manual' || now === 'init' || process.env.SKIP_CRONJOB !== undefined) return;
 			this.container.logger.info('*** Biblebomber: ACTIVE');
 			const data: Array<Array<string>> = JSON.parse(readFileSync(join(path.resolve(""), `dist/losungen_${now.getFullYear()}.json`)).toString());
-			const guild_data: Record<string, string> = JSON.parse(readFileSync(join(path.resolve(""), "guildconfig.json")).toString())
+			const guild = process.env.GUILD_ID ?? ""
+			const channel_id = process.env.CHANNEL_ID ?? ""
 			const today = date_string(now);
 			
 			data.forEach(async (item) => {
 				//this.container.logger.debug(today)
 				if (item[0] === today) {
 					
-						const channel = await (await this.container.client.guilds.fetch(guild_data["guild_id"])).channels.fetch(guild_data["channel_id"]);
+						const channel = await (await this.container.client.guilds.fetch(guild)).channels.fetch(channel_id);
 						let new_msg = await (channel as TextChannel).send({
 							embeds: [
 								{
