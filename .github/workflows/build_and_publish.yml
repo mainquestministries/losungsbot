@@ -110,6 +110,8 @@ jobs:
       uses: appleboy/ssh-action@master
       env: 
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        GUILD_ID: ${{ secrets.GUILD_ID }}
+        CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
       with:
         host: ${{ secrets.HOST }}
         username: deployer

@@ -24,14 +24,20 @@ export class UserEvent extends Listener {
 
 		const cron_str = dev ? '*/20 * * * * *' : '0 0 7 * * * *';
 		if(!(existsSync(join(path.resolve(""), `dist/losungen_${(new Date()).getFullYear()}.json`))))
-			{this.container.logger.fatal(`dist/losungen_${(new Date()).getFullYear()}.json not found!`)}
+			{this.container.logger.fatal(`dist/losungen_${(new Date()).getFullYear()}.json not found!`); return}
+			const guild = process.env.GUILD_ID
+			const channel_id = process.env.CHANNEL_ID
+			if (guild === undefined || channel_id === undefined) {
+				this.container.logger.fatal("Some Data is missing on the .env file!")
+				return
+			}
 		cron.schedule(cron_str, async (now) => {
 			//onst now = new Date()
+			
 			if (now === 'manual' || now === 'init' || process.env.SKIP_CRONJOB !== undefined) return;
 			this.container.logger.info('*** Biblebomber: ACTIVE');
 			const data: Array<Array<string>> = JSON.parse(readFileSync(join(path.resolve(""), `dist/losungen_${now.getFullYear()}.json`)).toString());
-			const guild = process.env.GUILD_ID ?? ""
-			const channel_id = process.env.CHANNEL_ID ?? ""
+			
 			const today = date_string(now);
 			
 			data.forEach(async (item) => {
