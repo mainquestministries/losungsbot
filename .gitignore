@@ -34,3 +34,8 @@ config.ts
 guildconfig.json
 .env
 losungen_2023.json
+
+# Devenv
+.devenv*
+devenv.local.nix
+
