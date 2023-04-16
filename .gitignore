@@ -38,4 +38,5 @@ losungen_2023.json
 # Devenv
 .devenv*
 devenv.local.nix
+.direnv/
 
