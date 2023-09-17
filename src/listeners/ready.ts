@@ -1,10 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Store } from '@sapphire/framework';
 import { blue, gray, green, magenta, magentaBright, white, yellow } from 'colorette';
-import type { TextChannel } from 'discord.js';
+import type { GuildMember, TextChannel } from 'discord.js';
 import { existsSync, readFileSync } from 'fs';
 import cron from "node-cron"
 import path, { join } from 'path';
+import { pickRandom } from '../lib/utils';
 
 const dev = process.env.NODE_ENV !== 'production';
 function date_string(now: Date) {
@@ -16,6 +17,36 @@ function date_string(now: Date) {
 	
 		return `${day}.${month}.${year}`;
 	}
+
+function hatchling_text(hatchling : [GuildMember, number]) {
+	const USER = hatchling[0].user
+	const NUMBER = hatchling[1]
+	
+	let res = pickRandom<string>([`**Wow! Schon ${NUMBER} Jahre hier, ${USER}**`,
+								`**Wir gratulieren unserem Veteranen ${USER} für ${NUMBER} Jahre Treue.**`,
+								`**${USER} hat Level ${NUMBER} erreicht!**`, 
+								`**Hier ein Stück Kuchen für dich, ${USER} - Schon ${NUMBER} Jahre dabei! 🍰**`,
+								`**Du meinst es wohl ernst mit der MainQuest, ${USER}. Wusstest du, dass du sie schon seit ${NUMBER} Jahren jagst?**`,
+								`**Du ${NUMBER} Jahre hier sein schon, ${USER}.**`,])
+	if (hatchling[1] <= 4) {
+		res = pickRandom<string>([`*Immer noch Nerd, ${USER}? Oder ist man das nach ${NUMBER} Jahren nicht mehr?*`,
+									`*Gratulation zu ${NUMBER} Jahren MQ-Mitglied, ${USER}!*`,
+									`*Leider haben wir keinen Kuchen für dich, ${USER}. Freu dich trotzdem, seit ${NUMBER} Jahren Member zu sein.*`,
+									`*Du scheinst ein größeres Ziel zu haben, ${USER}. Oder warum bist du seit ${NUMBER} Jahren schon hier?*`,
+									`*Management dankt dir, ${USER}. Schon seit ${NUMBER} Jahren arbeitest du die Mainquest ab.*`,
+									`*Herzlich Willkommen, ${USER}. Wait... *Raschel* Ups. Du bist ja schon seit ${NUMBER} Jahren hier 🤔*`,
+									`*Hiermit überreichen wir ${USER} die Auszeichnung für ${NUMBER} Jahre MQ-Member.*`])
+	}
+
+	if (hatchling[1] == 1) {
+		res = pickRandom<string>([`Gratulation zum ersten Dienstjahr, ${USER}.`,
+									`Hiermit ist Jahr 1 abgeschlossen, ${USER}.`,
+									`Kuchen gibt es erst ab dem 2. Jahr, ${USER}. Bleib dran!`,
+									`Und, wie fühlt es sich an, hier schon ein Jahr zu sein, $USER?`])
+	}
+	return res + "\n"
+}
+
 @ApplyOptions<Listener.Options>({ once: true })
 export class UserEvent extends Listener {
 	private readonly style = dev ? yellow : blue;
@@ -44,18 +75,38 @@ export class UserEvent extends Listener {
 				//this.container.logger.debug(today)
 				if (item[0] === today) {
 						
-						let birthday_text = "";
-						if (now.getDate() === 1 && now.getMonth() === 6) {
-							birthday_text = "\n\nAlles Gute zum 18. Geburtstag DURUS! 🥳"
+						
+
+						let hatchlings : [GuildMember, number][] = []
+
+						const mainquest = (await this.container.client.guilds.fetch(guild));
+
+						for(const m of (await mainquest.members.fetch({
+							force: true
+						}))) {
+							const member = await (m[1].fetch(true))
+							const joined = await member.joinedAt
+							if (joined != null && joined.getDay() == now.getDay() && joined.getMonth() == now.getMonth()) {
+								hatchlings.push([member, now.getFullYear() - joined.getFullYear()])
+							}
 						}
-					
-						const channel = await (await this.container.client.guilds.fetch(guild)).channels.fetch(channel_id);
+						
+						let hatchday_text = "";
+
+						if (hatchlings.length > 0) {
+							hatchday_text = "\n**Alle mal herhören! Wir haben Schlüpflinge! 🥳**\n\n"
+							for (const h of hatchlings) {
+								hatchday_text += hatchling_text(h)
+							}
+						}
+						
+						const channel = await mainquest.channels.fetch(channel_id);
 						let new_msg = await (channel as TextChannel).send({
 							embeds: [
 								{
 									title: `Tageslosung vom ${today}`,
 									url: `https://www.bibleserver.com/LUT/${item[3].replaceAll(" ", "")}`,
-									description: `*${item[3]}:* ${item[4]}` + birthday_text,
+									description: `*${item[3]}:* ${item[4]}` + hatchday_text,
 									color: 0xB49B83
 								}
 							]
