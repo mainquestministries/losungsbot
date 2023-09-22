@@ -43,19 +43,14 @@ export class UserEvent extends Listener {
 			data.forEach(async (item) => {
 				//this.container.logger.debug(today)
 				if (item[0] === today) {
-						
-						let birthday_text = "";
-						if (now.getDate() === 1 && now.getMonth() === 6) {
-							birthday_text = "\n\nAlles Gute zum 18. Geburtstag DURUS! 🥳"
-						}
-					
+										
 						const channel = await (await this.container.client.guilds.fetch(guild)).channels.fetch(channel_id);
 						let new_msg = await (channel as TextChannel).send({
 							embeds: [
 								{
 									title: `Tageslosung vom ${today}`,
 									url: `https://www.bibleserver.com/LUT/${item[3].replaceAll(" ", "")}`,
-									description: `*${item[3]}:* ${item[4]}` + birthday_text,
+									description: `*${item[3]}:* ${item[4]}`,
 									color: 0xB49B83
 								}
 							]
