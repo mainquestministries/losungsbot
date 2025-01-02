@@ -1,6 +1,6 @@
 {
   "name": "losungsbot",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "dist/index.js",
   "author": "@sapphire",
   "license": "UNLICENSE",
