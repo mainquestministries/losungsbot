@@ -7,7 +7,7 @@ def write_file_for_year(year : int=datetime.now().year):
     rewrite_file(input_, output_)
 
 def rewrite_file(i : str, o : str):
-    with open(i, "r", encoding="cp1252") as f:
+    with open(i, "r", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
         csv_list = list(reader)
 
