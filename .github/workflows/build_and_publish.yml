@@ -30,7 +30,7 @@ jobs:
         run: | 
            rm "dist/.tsbuildinfo"
       - name: Upload Dist
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: target_commonjs
           path: dist        
@@ -44,7 +44,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Download Dist
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: target_commonjs
         path: dist
