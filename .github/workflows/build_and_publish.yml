@@ -76,7 +76,7 @@ jobs:
            rm -rf src/ scripts/ .git/ .github/
            rm -f .gitignore .sapphirerc.json *.md tsconfig.json .prettierignore *.csv
     - name: Download Dist
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4.6.0
       with:
         name: target_commonjs
         path: dist
