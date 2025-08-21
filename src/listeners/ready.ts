@@ -32,7 +32,7 @@ export class UserEvent extends Listener {
 				return
 			}
 		cron.schedule(cron_str, async (now) => {
-			//onst now = new Date()
+			//const now = new Date()
 			
 			if (now === 'manual' || now === 'init' || process.env.SKIP_CRONJOB !== undefined) return;
 			this.container.logger.info('*** Biblebomber: ACTIVE');
@@ -40,10 +40,10 @@ export class UserEvent extends Listener {
 			
 			const today = date_string(now);
 			
-			data.forEach(async (item) => {
+			for (const item of data) {
 				//this.container.logger.debug(today)
 				if (item[0] === today) {
-										
+
 						const channel = await (await this.container.client.guilds.fetch(guild)).channels.fetch(channel_id);
 						let new_msg = await (channel as TextChannel).send({
 							embeds: [
@@ -55,16 +55,26 @@ export class UserEvent extends Listener {
 								}
 							]
 						});
-						await new_msg.startThread({
-							name: `Tageslosung vom ${today}`
+						const thread = await new_msg.startThread({
+							name: `Losungsvers vom ${today}`
 						});
-						['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'].forEach(async (emoji_) => {
+						for (const emoji_ of ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']) {
 							await new_msg.react(emoji_);
-						});
-					
-				}
-			});
-			this.container.logger.info('*** Disabling Biblebomber mode');
+						}
+                        await thread.send({
+                            embeds: [
+                                {
+                                    title: `Lehrvers vom ${today}`,
+                                    url: `https://www.bibleserver.com/LUT/${item[5].replaceAll(" ", "")}`,
+                                    description: `*${item[5]}:* ${item[6]}`,
+                                    color: 0xB49B83
+                                }
+                            ]
+                        });
+
+                }
+			}
+            this.container.logger.info('*** Disabling Biblebomber mode');
 		
 		})
 
